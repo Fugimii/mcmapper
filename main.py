@@ -2,19 +2,23 @@ import amulet
 import readWorld
 import render
 
-xPos = input("Enter x position\n") #ask user for size/position for the map
-yPos = input("Enter y position\n")
-size = input("Enter size of the map\n")
-name = input("What do you want to name the image?\n")
+mode = str(input("Render textures(t) or heightmap?(h)\n"))
+xPos = int(input("X position\n"))
+yPos = int(input("Y position\n"))
+size = int(input("how big should the map be?(in blocks)\n"))
+name = str(input("what should the image be called?\n"))
 
-level = amulet.load_level("world") #load the level
-print("Reading world... \nThis may take some time")
-world = readWorld.getBlocks(int(xPos), int(yPos), int(size), level)
+print("Loading level... this may take some time")
+world = amulet.load_level("world") #load the level
+level = readWorld.getBlocks(xPos, yPos, size, world) #read world
 
-print("Rendering...") #render the level
-render.renderHeightMap(world, int(size), str(name))
+print("Rendering...")
+if mode == "t":
+    render.renderTextures(level, size, "./textures/vanilla/block/", 16).save(name + ".png")
+elif mode == "h":
+    render.renderHeightMap(level, size).save(name + ".png")
 
-level.save()
-level.close() #save and close the level
+world.save()
+world.close() #save and close the level
 
-#xPos, yPos = -122 - 100, -836 - 100
+#-122 ,69, -836
