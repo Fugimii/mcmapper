@@ -3,9 +3,11 @@
 
 If you want to use it right now you will need to put a world in the directory this repository is in and then run `main.py` and make sure to install [amulet-core](https://github.com/Amulet-Team/Amulet-Core) and [PIL](https://github.com/python-pillow/Pillow)
 
+![alt text](https://raw.githubusercontent.com/Fugimii/mcmapper/main/world.png)
+
 ### TODO:
 - [x] Get textures working
-- [ ] Make all greyscale textures work
+- [x] Make all greyscale textures work
 - [ ] Fix weird kelp bug
 - [ ] A launcher type thing that lets you change settings
 - [ ] Allow selecting worlds from the .minecraft/saves folder
