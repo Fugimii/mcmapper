@@ -1,6 +1,17 @@
 from PIL import Image, ImageDraw, ImageOps
 import os
 
+blockColours = {
+    "grass_block": (145, 189, 89),
+    "oak_leaves": (145, 189, 89),
+    "jungle_leaves": (145, 189, 89),
+    "acacia_leaves": (145, 189, 89),
+    "dark_oak_leaves": (145, 189, 89),
+    "water_flow": (68, 175, 245),
+    "birch_leaves": (128, 167, 85),
+    "spruce_leaves": (97, 153, 97)
+}
+
 def renderHeightMap(level, size):
     img = Image.new("RGB", (size, size), "white") #setup the image 
     draw = ImageDraw.Draw(img)
@@ -18,26 +29,12 @@ def renderBlock(img, block, blockName, i, j, res, height):
         texture = Image.open(block + "_top.png").convert("RGB")
     else:
         texture = Image.open(block + ".png").convert("RGB")
-    
-    if blockName == "grass_block": #if block is grass, change the colour from the gray resource pack to a proper colour
-        r, g, b = texture.split()
-        r = r.point(lambda i: i-66+height) #changing the rgb values
-        g = g.point(lambda i: i-37+height)
-        b = b.point(lambda i: i-105+height)
-        texture = Image.merge("RGB", (r, g, b))
-    
-    if blockName == "oak_leaves": #if block is grass, change the colour from the gray resource pack to a proper colour
-        r, g, b = texture.split()
-        r = r.point(lambda i: i-66+height) #changing the rgb values
-        g = g.point(lambda i: i-37+height)
-        b = b.point(lambda i: i-105+height)
-        texture = Image.merge("RGB", (r, g, b))
 
-    if blockName == "water_flow": #if block is grass, change the colour from the gray resource pack to a proper colour
+    if blockName in blockColours:
         r, g, b = texture.split()
-        r = r.point(lambda i: i-76+height) #changing the rgb values
-        g = g.point(lambda i: i-56+height)
-        b = b.point(lambda i: i-8+height)
+        r = r.point(lambda i: i - 147 + blockColours.get(blockName)[0]) #changing the rgb values
+        g = g.point(lambda i: i - 147 + blockColours.get(blockName)[1])
+        b = b.point(lambda i: i - 147 + blockColours.get(blockName)[2])
         texture = Image.merge("RGB", (r, g, b))
 
     img.paste(texture, (i*res, j*res))
@@ -45,6 +42,8 @@ def renderBlock(img, block, blockName, i, j, res, height):
 def renderTextures(level, size, texturesDir, res):
     img = Image.new("RGB", (size*res, size*res), "white") #setup the image 
     k = 0
+
+    print(level)
 
     for j in range(size): #draw a texture for every block given in level
         for i in range(size):

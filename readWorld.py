@@ -2,7 +2,7 @@ import amulet
 from amulet.utils.world_utils import block_coords_to_chunk_coords
 
 blockedBlocks = ["air", "grass", "tall_grass", "kelp", "daisy", "allium", "poppy", "blue_orchid", "azure_bluet", "tulip",
-                 "oxeye_daisy", "cornflower", "lily_of_the_valley", "wither_rose", "dandelion", "sugar_cane"]
+                 "oxeye_daisy", "cornflower", "lily_of_the_valley", "wither_rose", "dandelion", "sugar_cane", "vines", "seagrass", "sea_grass"]
 
 def getBlockAt(xPos, yPos, zPos, level):
     chunkX, chunkZ = block_coords_to_chunk_coords(xPos, zPos) #find the chunk coordinates of the blocks
@@ -10,16 +10,19 @@ def getBlockAt(xPos, yPos, zPos, level):
     offset_x, offset_z = xPos - 16 * chunkX, zPos - 16 * chunkZ #find the offset inside the chunk
     block_id = chunk.blocks[offset_x, yPos, offset_z] #get the block id
     universal_block = chunk.block_palette[block_id] #turn the id into a name
-    java_block, java_block_entity, java_extra = level.translation_manager.get_version("java", (1, 19, 3)).block.from_universal(universal_block)
+    java_block, java_block_entity, java_extra = level.translation_manager.get_version("java", (1, 19, 4)).block.from_universal(universal_block)
     
     return(str(java_block))
 
 def getHighestBlock(xPos, zPos, level):
-    for i in range(384):
+    i=0
+    while True:
         yTestPos = 384 - i + 61
         block = getBlockAt(xPos, yTestPos, zPos, level).split(":")[1].split("[")[0].replace("wood", "log").replace("water", "water_flow")
         if not block in blockedBlocks:
+            print(block)
             break
+        i+=1
 
     return([block, yTestPos])
 
